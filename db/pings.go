@@ -63,14 +63,13 @@ func GetAggregatedPings(filter string) (pings []PingTest, err error) {
 		break
 	}
 
-	groupedPingsLen := len(tempPings) / divider
 	var groupedPings [][]PingTest
-	for i := divider; i < groupedPingsLen; i += divider {
+	for i := divider; i < len(tempPings); i += divider {
 		groupedPings = append(groupedPings, tempPings[i-divider:i])
 	}
 
+	// Aggregate the numbers and get the max and min values of each aggregation
 	for _, groupedPing := range groupedPings {
-		var time int64
 		isOnline := true
 		var avg float64
 		var min float64
@@ -78,9 +77,6 @@ func GetAggregatedPings(filter string) (pings []PingTest, err error) {
 		var jitter float64
 
 		for index, ping := range groupedPing {
-			if time == 0 {
-				time = ping.Time
-			}
 			if !ping.IsOnline {
 				isOnline = false
 			}
@@ -95,7 +91,7 @@ func GetAggregatedPings(filter string) (pings []PingTest, err error) {
 		}
 
 		pings = append(pings, PingTest{
-			Time:     time,
+			Time:     groupedPing[len(groupedPing)-1].Time,
 			IsOnline: isOnline,
 			Avg:      avg / float64(divider),
 			Min:      min,

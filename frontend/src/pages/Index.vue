@@ -2,13 +2,20 @@
   <q-page>
     <TopBar/>
     <Graph/>
+    <div class="row">
+      <div class="col">
+        <Latest/>
+      </div>
+      <div class="col"></div>
+    </div>
   </q-page>
 </template>
 
 <script>
   import { defineComponent } from "vue";
   import TopBar from 'components/Home/TopBar'
-  import Graph from "components/Home/Graph.vue";
+  import Graph from "components/Home/Graph.vue"
+  import Latest from "components/Home/LatestTable.vue";
 
   export default defineComponent({
     name: "PageIndex",
@@ -21,7 +28,8 @@
     },
     components: {
       TopBar,
-      Graph
+      Graph,
+      Latest
     }
   });
 </script>

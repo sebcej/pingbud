@@ -10,3 +10,7 @@ export function setGraph (state, graph) {
 export function setStats (state, stats) {
     state.stats = stats
 }
+
+export function setLatest (state, latest) {
+    state.latest = latest
+}

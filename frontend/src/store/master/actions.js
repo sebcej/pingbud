@@ -11,4 +11,5 @@ export async  function getStats (context) {
 
     context.commit('setGraph', results.data.aggregated)
     context.commit('setStats', results.data.stats)
+    context.commit('setLatest', results.data.latest)
 }
