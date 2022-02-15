@@ -49,16 +49,59 @@ func InsertPing(data PingTest) error {
 func GetAggregatedPings(filter string) (pings []PingTest, err error) {
 	start, end := manageFilters(filter)
 
-	err = dbi.From("pings").Select(q.Gte("Time", start), q.Lte("Time", end)).Find(&pings)
+	var tempPings []PingTest
+	err = dbi.From("pings").Select(q.Gte("Time", start), q.Lte("Time", end)).Find(&tempPings)
 
 	divider := 1
 
+	// Check which divider we need in order to have a reasonable number of elements for the chart
 	for {
-		if len(pings)/divider >= common.MAX_SENDABLE_VALS {
+		if len(tempPings)/divider >= common.MAX_SENDABLE_VALS {
 			divider++
 			continue
 		}
 		break
+	}
+
+	groupedPingsLen := len(tempPings) / divider
+	var groupedPings [][]PingTest
+	for i := divider; i < groupedPingsLen; i += divider {
+		groupedPings = append(groupedPings, tempPings[i-divider:i])
+	}
+
+	for _, groupedPing := range groupedPings {
+		var time int64
+		isOnline := true
+		var avg float64
+		var min float64
+		var max float64
+		var jitter float64
+
+		for index, ping := range groupedPing {
+			if time == 0 {
+				time = ping.Time
+			}
+			if !ping.IsOnline {
+				isOnline = false
+			}
+			avg += ping.Avg
+			if ping.Min < min || index == 0 {
+				min = ping.Min
+			}
+			if ping.Max > max {
+				max = ping.Max
+			}
+			jitter += ping.Jitter
+		}
+
+		pings = append(pings, PingTest{
+			Time:     time,
+			IsOnline: isOnline,
+			Avg:      avg / float64(divider),
+			Min:      min,
+			Max:      max,
+			Jitter:   jitter / float64(divider),
+		})
 	}
 
 	return
