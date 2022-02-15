@@ -2,6 +2,7 @@ package common
 
 const (
 	SETTINGS_FILE_NAME = "pingbud_conf.json"
+	MAX_SENDABLE_VALS  = 50
 )
 
 var (

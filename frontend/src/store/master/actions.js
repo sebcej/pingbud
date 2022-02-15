@@ -9,6 +9,6 @@ export async  function getSettings (context) {
 export async  function getStats (context) {
     const results = await api.get('/stats')
 
-    context.commit('setGraph', results.data.results)
+    context.commit('setGraph', results.data.aggregated)
     context.commit('setStats', results.data.stats)
 }

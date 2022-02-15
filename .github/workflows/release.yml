@@ -5,38 +5,6 @@ on:
     types: [created, updated]
 
 jobs:
-  goreleaser:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        working-directory: frontend
-        with:
-          node-version: '14.x'
-      - name: Install node dependencies
-        run: npm install
-        working-directory: frontend
-      - name: Install node dependencies
-        run: npm install
-        working-directory: frontend
-      - name: Build frontend spa
-        run: npm run build
-        working-directory: frontend
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.16
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v2
-        with:
-          version: latest
-          args: release --rm-dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
   push_to_registry:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest

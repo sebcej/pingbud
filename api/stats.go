@@ -8,17 +8,26 @@ import (
 )
 
 func getStats(c *gin.Context) {
-	pings, err := db.GetPings()
+	filter := c.DefaultQuery("filter", "")
+
+	aggregatedPings, err := db.GetAggregatedPings(filter)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
-	stats, err := db.GetDailyStats()
+
+	latestPings, err := db.GetLatestPings(filter)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
+	stats, err := db.GetDailyStats(filter)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"results": pings,
-		"stats":   stats,
+		"aggregated": aggregatedPings,
+		"latest":     latestPings,
+		"stats":      stats,
 	})
 }
