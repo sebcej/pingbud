@@ -93,10 +93,10 @@ func GetAggregatedPings(filter string) (pings []PingTest, err error) {
 		pings = append(pings, PingTest{
 			Time:     groupedPing[len(groupedPing)-1].Time,
 			IsOnline: isOnline,
-			Avg:      avg / float64(divider),
-			Min:      min,
-			Max:      max,
-			Jitter:   jitter / float64(divider),
+			Avg:      common.ToFixed(avg/float64(divider), 6),
+			Min:      common.ToFixed(min, 6),
+			Max:      common.ToFixed(max, 6),
+			Jitter:   common.ToFixed(jitter/float64(divider), 6),
 		})
 	}
 
