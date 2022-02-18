@@ -27,14 +27,30 @@ func pingCron() {
 	}
 	stats := pinger.Statistics()
 
+	max := float64(stats.MaxRtt.Nanoseconds())
+	min := float64(stats.MinRtt.Nanoseconds())
+	avg := float64(stats.AvgRtt.Nanoseconds())
+	jitter := float64(stats.StdDevRtt.Nanoseconds())
+
+	// If data is broken or without any sens we will flag them as an error connection
+	// This will exclude them from stats
+	if min <= 0 || max <= 0 || avg <= 0 || jitter < 0 {
+		error = true
+
+		min = 0
+		max = 0
+		avg = 0
+		jitter = 0
+	}
+
 	parsedStats := db.PingTest{
 		Time:     time.Now().Unix(),
 		IsOnline: !error,
 		Pings:    stats.Rtts,
-		Max:      float64(stats.MaxRtt.Nanoseconds()) / 1000000,
-		Min:      float64(stats.MinRtt.Nanoseconds()) / 1000000,
-		Avg:      float64(stats.AvgRtt.Nanoseconds()) / 1000000,
-		Jitter:   float64(stats.StdDevRtt.Nanoseconds()) / 1000000,
+		Max:      max / 1000000,
+		Min:      min / 1000000,
+		Avg:      avg / 1000000,
+		Jitter:   jitter / 1000000,
 	}
 
 	db.InsertPing(parsedStats)

@@ -122,6 +122,10 @@ func GetDailyStats(filter string) (daily GenericStats, err error) {
 	pingsLen := len(pings)
 	if pingsLen > 0 {
 		for _, ping := range pings {
+			if !ping.IsOnline {
+				continue
+			}
+
 			daily.AvgPing += ping.Avg
 			daily.AvgJitter += ping.Jitter
 		}
