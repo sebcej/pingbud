@@ -20,7 +20,7 @@ func getStats(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
-	stats, err := db.GetDailyStats(filter)
+	stats, err := db.GetStats(filter)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
