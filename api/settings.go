@@ -15,14 +15,15 @@ func getSettings(c *gin.Context) {
 
 func setSettings(c *gin.Context) {
 	// Validate the settings
-	var settingsValidator common.SettingsAttrs
-	if err := c.ShouldBindJSON(&settingsValidator); err != nil {
+	var settings common.SettingsAttrs
+	if err := c.ShouldBindJSON(&settings); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Sent them in a way that supports Viper
-	var settings map[string]interface{}
-	c.BindJSON(&settings)
 	common.UpdateSettings(settings)
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+	})
 }

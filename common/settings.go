@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"os"
+	"reflect"
 
 	"github.com/spf13/viper"
 )
@@ -57,9 +58,14 @@ func UpdateSetting(key string, value interface{}) {
 	viper.WriteConfig()
 }
 
-func UpdateSettings(settings map[string]interface{}) {
-	for key, value := range settings {
-		Settings.Set(key, value)
+func UpdateSettings(settings SettingsAttrs) {
+	attrs := reflect.ValueOf(settings)
+	attrType := reflect.TypeOf(settings)
+
+	for i := 0; i < attrs.NumField(); i++ {
+		field := attrType.Field(i)
+
+		Settings.Set(field.Tag.Get("json"), attrs.Field(i).Interface())
 	}
 
 	viper.WriteConfig()

@@ -7,6 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Chart documentation for annotations generation
+// https://apexcharts.com/docs/annotations/
+
 func getStats(c *gin.Context) {
 	filter := c.DefaultQuery("filter", "")
 
