@@ -35,7 +35,7 @@
       },
       async show() {
         await this.getData()
-        this.form = this.settings
+        this.form = {...this.settings}
         this.visible = true
       },
       hide() {
@@ -43,6 +43,7 @@
       },
       async submit() {
         await this.$store.dispatch('master/saveSettings', this.form)
+        await this.getData()
       }
     },
     computed: {

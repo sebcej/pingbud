@@ -13,7 +13,7 @@ var Settings *viper.Viper
 type SettingsAttrs struct {
 	PingRoute string `json:"pingroute" binding:"required"`
 	PingCron  string `json:"pingcron" binding:"required"`
-	Enabled   bool   `json:"enabled" binding:"required"`
+	Enabled   bool   `json:"enabled" binding:""`
 	Timeout   int    `json:"timeout" binding:"required"`
 	PingCount int    `json:"pingcount" binding:"required"`
 	Retention int    `json:"retention" binding:"required"`
@@ -41,7 +41,6 @@ func InitSettings() {
 			panic("Conf error")
 		}
 	}
-
 }
 
 func UpdateSetting(key string, value interface{}) {
@@ -67,6 +66,7 @@ func UpdateSettings(settings SettingsAttrs, isDefault bool) {
 			Settings.Set(fieldName, fieldValue)
 		}
 	}
-
-	Settings.WriteConfig()
+	if !isDefault {
+		Settings.WriteConfig()
+	}
 }
