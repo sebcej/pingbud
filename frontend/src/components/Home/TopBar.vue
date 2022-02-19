@@ -1,9 +1,7 @@
 <template>
     <div class="row q-col-gutter-md q-mb-md">
-      <div class="col-4">
-        <q-card
-            class="bg-positive"
-        >
+      <div class="col-md-4 col-6">
+        <q-card class="bg-positive">
           <q-card-section>
             <div class="text-h6">Latence</div>
           </q-card-section>
@@ -13,10 +11,8 @@
           </q-card-section>
         </q-card>
       </div>
-      <div class="col-4">
-          <q-card
-              class="bg-info"
-          >
+      <div class="col-md-4 col-6">
+          <q-card class="bg-info">
             <q-card-section>
               <div class="text-h6">Jitter</div>
             </q-card-section>
@@ -26,27 +22,27 @@
             </q-card-section>
           </q-card>
         </div>
-        <div class="col-1">
-          <q-card
-              class="bg-negative"
-          >
+        <div class="col-md-1 col-6">
+          <q-card class="bg-negative">
             <q-card-section>
               <div class="text-h6">Errors</div>
             </q-card-section>
 
             <q-card-section class="text-center text-h4">
-              {{stats.errors}}
+              {{stats.errors || '-'}}
             </q-card-section>
           </q-card>
         </div>
-        <div class="col-3">
+        <div class="col-md-3 col-6">
           <SettingsPopup ref="settings"/>
-          <q-card
-              class="bg-negative"
-          >
+          <q-card>
             <q-card-section>
-              <a href="#" @click="$refs.settings.show()">Settings</a>
-              <a href="#" >Start</a>
+              <div class="text-h6">Control panel</div>
+            </q-card-section>
+
+            <q-card-section>
+              <q-icon size="2.4rem" name="play_arrow" color="green" class="cursor-pointer"/>
+              <q-icon @click="$refs.settings.show()" size="2.4rem" name="settings" class="q-ml-lg cursor-pointer"/>
             </q-card-section>
           </q-card>
         </div>
