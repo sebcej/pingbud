@@ -19,15 +19,6 @@ type SettingsAttrs struct {
 	Retention int    `json:"retention" binding:"required"`
 }
 
-func setSettingsDefaults() {
-	viper.SetDefault("pingroute", SETTINGS_DEFAULTS.PingRoute)
-	viper.SetDefault("pingcron", SETTINGS_DEFAULTS.PingCron)
-	viper.SetDefault("enabled", SETTINGS_DEFAULTS.Enabled)
-	viper.SetDefault("timeout", SETTINGS_DEFAULTS.Timeout)
-	viper.SetDefault("pingcount", SETTINGS_DEFAULTS.PingCount)
-	viper.SetDefault("retention", SETTINGS_DEFAULTS.Retention)
-}
-
 func InitSettings() {
 	filePath := os.Getenv("SETTINGS_PATH")
 	if filePath == "" {
@@ -38,9 +29,11 @@ func InitSettings() {
 	viper.SetConfigType("json")
 	viper.AddConfigPath(filePath)
 
-	setSettingsDefaults()
+	Settings = viper.GetViper()
 
-	if err := viper.ReadInConfig(); err != nil {
+	UpdateSettings(SETTINGS_DEFAULTS, true)
+
+	if err := Settings.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
 			fmt.Println("Creating conf")
 			viper.WriteConfigAs(filePath + "/" + SETTINGS_FILE_NAME)
@@ -49,7 +42,6 @@ func InitSettings() {
 		}
 	}
 
-	Settings = viper.GetViper()
 }
 
 func UpdateSetting(key string, value interface{}) {
@@ -58,15 +50,23 @@ func UpdateSetting(key string, value interface{}) {
 	viper.WriteConfig()
 }
 
-func UpdateSettings(settings SettingsAttrs) {
+// Update settings based on the content of the SettingsAttrs config
+func UpdateSettings(settings SettingsAttrs, isDefault bool) {
 	attrs := reflect.ValueOf(settings)
 	attrType := reflect.TypeOf(settings)
 
 	for i := 0; i < attrs.NumField(); i++ {
 		field := attrType.Field(i)
 
-		Settings.Set(field.Tag.Get("json"), attrs.Field(i).Interface())
+		fieldName := field.Tag.Get("json")
+		fieldValue := attrs.Field(i).Interface()
+
+		if isDefault {
+			Settings.SetDefault(fieldName, fieldValue)
+		} else {
+			Settings.Set(fieldName, fieldValue)
+		}
 	}
 
-	viper.WriteConfig()
+	Settings.WriteConfig()
 }

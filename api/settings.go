@@ -21,7 +21,7 @@ func setSettings(c *gin.Context) {
 		return
 	}
 
-	common.UpdateSettings(settings)
+	common.UpdateSettings(settings, false)
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
