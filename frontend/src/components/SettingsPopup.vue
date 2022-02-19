@@ -5,14 +5,14 @@
           Settings
         </q-card-section>
         <q-card-section style="min-width: 500px;">
-          <q-input type="number" label="N. of pings" v-model="form.pingcount"/>
-          <q-input label="Frequency" v-model="form.pingcron"/>
+          <q-input type="number" label="N. of pings" v-model.number="form.pingcount"/>
+          <q-input label="Frequency" v-model.number="form.pingcron"/>
           <q-input label="Ip to call" v-model="form.pingroute"/>
-          <q-input type="number" label="Data retention (days)" v-model="form.retention"/>
-          <q-input type="number" label="Timeout (seconds)" v-model="form.timeout"/>
+          <q-input type="number" label="Data retention (days)" v-model.number="form.retention"/>
+          <q-input type="number" label="Timeout (seconds)" v-model.number="form.timeout"/>
         </q-card-section>
         <q-card-section>
-          <q-btn color="primary" size="md">Save</q-btn>
+          <q-btn color="primary" size="md" @click="submit">Save</q-btn>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -40,6 +40,9 @@
       },
       hide() {
         this.visible = false
+      },
+      async submit() {
+        await this.$store.dispatch('master/saveSettings', this.form)
       }
     },
     computed: {
