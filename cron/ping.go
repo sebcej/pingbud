@@ -32,7 +32,7 @@ func pingCron() {
 	avg := float64(stats.AvgRtt.Nanoseconds())
 	jitter := float64(stats.StdDevRtt.Nanoseconds())
 
-	// If data is broken or without any sens we will flag them as an error connection
+	// If data is broken or without any sense we will flag them as an error connection
 	// This will exclude them from stats
 	if min <= 0 || max <= 0 || avg <= 0 || jitter < 0 {
 		error = true
