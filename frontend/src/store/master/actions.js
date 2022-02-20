@@ -17,3 +17,10 @@ export async function getStats (context) {
 export async function saveSettings (context, settingsObj) {
     await api.post('/settings', settingsObj)
 }
+
+export async function toggleEnabled (context) {
+    const settings = {...context.state.settings}
+    settings.enabled = !settings.enabled
+
+    await api.post('/settings', settings)
+}

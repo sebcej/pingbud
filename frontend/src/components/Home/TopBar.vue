@@ -41,7 +41,7 @@
             </q-card-section>
 
             <q-card-section>
-              <q-icon size="2.4rem" name="play_arrow" color="green" class="cursor-pointer"/>
+              <q-icon size="2.4rem" :name="enabledStatus.icon" :color="enabledStatus.color" class="cursor-pointer" @click="toggleEnabled"/>
               <q-icon @click="$refs.settings.show()" size="2.4rem" name="settings" class="q-ml-lg cursor-pointer"/>
             </q-card-section>
           </q-card>
@@ -58,11 +58,22 @@
     methods: {
       round (val) {
         return val ? val.toFixed(3) : ' - '
+      },
+      async toggleEnabled () {
+        await this.$store.dispatch('master/toggleEnabled')
+        await this.$store.dispatch('master/getSettings')
       }
     },
     computed: {
       stats () {
         return this.$store.state['master'].stats
+      },
+      enabledStatus() {
+        const settings = this.$store.state['master'].settings
+        return {
+          icon: settings.enabled ? 'stop' : 'play_arrow',
+          color: settings.enabled ? 'red': 'green'
+        }
       }
     },
     components: {
