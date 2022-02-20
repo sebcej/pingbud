@@ -28,9 +28,15 @@ func getStats(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
+	errors, err := db.GetErrors(filter)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"aggregated": aggregatedPings,
 		"latest":     latestPings,
+		"errors":     errors,
 		"stats":      stats,
 	})
 }

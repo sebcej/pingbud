@@ -14,3 +14,7 @@ export function setStats (state, stats) {
 export function setLatest (state, latest) {
     state.latest = latest
 }
+
+export function setErrors (state, errors) {
+    state.errors = errors
+}

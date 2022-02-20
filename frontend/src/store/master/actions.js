@@ -12,6 +12,7 @@ export async function getStats (context) {
     context.commit('setGraph', results.data.aggregated)
     context.commit('setStats', results.data.stats)
     context.commit('setLatest', results.data.latest)
+    context.commit('setErrors', results.data.errors)
 }
 
 export async function saveSettings (context, settingsObj) {

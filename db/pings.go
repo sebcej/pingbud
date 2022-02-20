@@ -115,7 +115,14 @@ func GetAggregatedPings(filter string) (pings []PingTest, err error) {
 func GetLatestPings(filter string) (pings []PingTest, err error) {
 	start, end := manageFilters(filter)
 
-	dbi.From("pings").Select(q.Gte("Time", start), q.Lte("Time", end)).Limit(20).OrderBy("Time").Reverse().Find(&pings)
+	dbi.From("pings").Select(q.Gte("Time", start), q.Lte("Time", end)).Limit(60).OrderBy("Time").Reverse().Find(&pings)
+	return
+}
+
+func GetErrors(filter string) (pings []PingTest, err error) {
+	start, end := manageFilters(filter)
+
+	dbi.From("pings").Select(q.Gte("Time", start), q.Lte("Time", end), q.Eq("IsOnline", false)).OrderBy("Time").Reverse().Find(&pings)
 	return
 }
 

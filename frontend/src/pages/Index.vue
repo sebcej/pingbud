@@ -2,11 +2,13 @@
   <q-page>
     <TopBar/>
     <Graph/>
-    <div class="row">
-      <div class="col-12 col-md-6">
+    <div class="row q-col-gutter-md q-mb-md">
+      <div class="col-12 col-md-9">
         <Latest/>
       </div>
-      <div class="col-12 col-md-6"></div>
+      <div class="col-12 col-md-3">
+        <Errors/>
+      </div>
     </div>
   </q-page>
 </template>
@@ -16,6 +18,7 @@
   import TopBar from 'components/Home/TopBar'
   import Graph from "components/Home/Graph.vue"
   import Latest from "components/Home/LatestTable.vue";
+  import Errors from "components/Home/ErrorsTable.vue";
 
   export default defineComponent({
     name: "PageIndex",
@@ -29,7 +32,8 @@
     components: {
       TopBar,
       Graph,
-      Latest
+      Latest,
+      Errors
     }
   });
 </script>
