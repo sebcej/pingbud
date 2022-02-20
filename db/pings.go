@@ -49,8 +49,9 @@ func InsertPing(data PingTest) error {
 func GetAggregatedPings(filter string) (pings []PingTest, err error) {
 	start, end := manageFilters(filter)
 
-	var tempPings []PingTest
-	err = dbi.From("pings").Select(q.Gte("Time", start), q.Lte("Time", end)).Find(&tempPings)
+	pings = []PingTest{}
+	tempPings := []PingTest{}
+	dbi.From("pings").Select(q.Gte("Time", start), q.Lte("Time", end)).Find(&tempPings)
 
 	divider := 1
 
@@ -115,6 +116,7 @@ func GetAggregatedPings(filter string) (pings []PingTest, err error) {
 func GetLatestPings(filter string) (pings []PingTest, err error) {
 	start, end := manageFilters(filter)
 
+	pings = []PingTest{}
 	dbi.From("pings").Select(q.Gte("Time", start), q.Lte("Time", end)).Limit(60).OrderBy("Time").Reverse().Find(&pings)
 	return
 }
@@ -122,12 +124,13 @@ func GetLatestPings(filter string) (pings []PingTest, err error) {
 func GetErrors(filter string) (pings []PingTest, err error) {
 	start, end := manageFilters(filter)
 
+	pings = []PingTest{}
 	dbi.From("pings").Select(q.Gte("Time", start), q.Lte("Time", end), q.Eq("IsOnline", false)).OrderBy("Time").Reverse().Find(&pings)
 	return
 }
 
 func GetStats(filter string) (daily GenericStats, err error) {
-	var pings []PingTest
+	pings := []PingTest{}
 	start, end := manageFilters(filter)
 
 	dbi.From("pings").Select(q.Gte("Time", start), q.Lte("Time", end), q.Eq("IsOnline", false)).Find(&pings)
