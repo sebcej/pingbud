@@ -3,6 +3,10 @@ export function setSettings (state, settings) {
     state.settings = settings
 }
 
+export function setFilter (state, filter) {
+    state.dateFilter = filter
+}
+
 export function setGraph (state, graph) {
     state.graph = graph
 }

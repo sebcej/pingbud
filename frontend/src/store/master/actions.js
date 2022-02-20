@@ -7,7 +7,13 @@ export async function getSettings (context) {
 }
 
 export async function getStats (context) {
-    const results = await api.get('/stats')
+    const results = await api({
+        method: 'GET',
+        url: '/stats',
+        params: {
+            'filter': context.state.dateFilter
+        }
+    })
 
     context.commit('setGraph', results.data.aggregated)
     context.commit('setStats', results.data.stats)
