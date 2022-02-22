@@ -8,13 +8,13 @@ import (
 )
 
 type PingTest struct {
-	Time     int64           `storm:"id" json:"time"`
-	IsOnline bool            `json:"isOnline"`
-	Pings    []time.Duration `json:"pings"`
-	Avg      float64         `json:"avg"`
-	Min      float64         `json:"min"`
-	Max      float64         `json:"max"`
-	Jitter   float64         `json:"jitter"`
+	Time     int64     `storm:"id" json:"time"`
+	IsOnline bool      `json:"isOnline"`
+	Pings    []float64 `json:"pings"`
+	Avg      float64   `json:"avg"`
+	Min      float64   `json:"min"`
+	Max      float64   `json:"max"`
+	Jitter   float64   `json:"jitter"`
 }
 
 type GenericStats struct {

@@ -8,6 +8,10 @@ import (
 	"github.com/go-ping/ping"
 )
 
+func parseNS(stat time.Duration) float64 {
+	return float64(stat.Nanoseconds()) / 1000000
+}
+
 func pingCron() {
 	if !common.Settings.GetBool("enabled") {
 		return
@@ -27,10 +31,10 @@ func pingCron() {
 	}
 	stats := pinger.Statistics()
 
-	max := float64(stats.MaxRtt.Nanoseconds())
-	min := float64(stats.MinRtt.Nanoseconds())
-	avg := float64(stats.AvgRtt.Nanoseconds())
-	jitter := float64(stats.StdDevRtt.Nanoseconds())
+	max := parseNS(stats.MaxRtt)
+	min := parseNS(stats.MinRtt)
+	avg := parseNS(stats.AvgRtt)
+	jitter := parseNS(stats.StdDevRtt)
 
 	// If data is broken or without any sense we will flag them as an error connection
 	// This will exclude them from stats
@@ -43,14 +47,19 @@ func pingCron() {
 		jitter = 0
 	}
 
+	var pings []float64
+	for _, rtt := range stats.Rtts {
+		pings = append(pings, parseNS(rtt))
+	}
+
 	parsedStats := db.PingTest{
 		Time:     time.Now().Unix(),
 		IsOnline: !error,
-		Pings:    stats.Rtts,
-		Max:      max / 1000000,
-		Min:      min / 1000000,
-		Avg:      avg / 1000000,
-		Jitter:   jitter / 1000000,
+		Pings:    pings,
+		Max:      max,
+		Min:      min,
+		Avg:      avg,
+		Jitter:   jitter,
 	}
 
 	db.InsertPing(parsedStats)
