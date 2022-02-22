@@ -23,4 +23,6 @@ COPY --from=backend_builder /app/pingbud /go/pingbud
 ENV PINGBUD_DB_PATH=/
 ENV PINGBUD_SETTINGS_PATH=/
 
+EXPOSE 8080
+
 CMD [ "./pingbud" ]
