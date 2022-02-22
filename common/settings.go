@@ -21,9 +21,9 @@ type SettingsAttrs struct {
 }
 
 func InitSettings() {
-	filePath := os.Getenv("SETTINGS_PATH")
+	filePath := os.Getenv("PINGBUD_SETTINGS_PATH")
 	if filePath == "" {
-		filePath = "/data/"
+		filePath = "."
 	}
 
 	viper.SetConfigName("pingbud_conf.json")
