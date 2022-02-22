@@ -1,5 +1,5 @@
 <template>
-    <q-dialog v-model="visible">
+    <q-dialog v-model="visible" ref="popup">
       <q-card>
         <q-card-section class="text-h4">
           Settings
@@ -55,6 +55,7 @@
       },
       async submit() {
         await this.$store.dispatch('master/saveSettings', this.form)
+        this.$refs.popup.hide()
         await this.getData()
       }
     },

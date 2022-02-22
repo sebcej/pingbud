@@ -26,7 +26,7 @@
       this.$store.dispatch('master/getSettings')
       setInterval(() => {
         this.$store.dispatch('master/getStats')
-      }, 5000)
+      }, 60000)
       this.$store.dispatch('master/getStats')
     },
     components: {
