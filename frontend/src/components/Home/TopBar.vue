@@ -1,6 +1,6 @@
 <template>
     <div class="row q-col-gutter-md q-mb-md">
-      <div class="col-md-4 col-6">
+      <div class="col-md-4 col-12">
         <q-card class="bg-positive">
           <q-card-section>
             <div class="text-h6">Latence</div>
@@ -33,7 +33,7 @@
             </q-card-section>
           </q-card>
         </div>
-        <div class="col-md-3 col-6">
+        <div class="col-md-3 col-12">
           <SettingsPopup ref="settings"/>
           <q-card>
             <q-card-section>

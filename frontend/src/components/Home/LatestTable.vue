@@ -24,6 +24,7 @@
         this.cols = [
             { name: 'time', label: 'Time', field: 'time', sortable: true, format: val => new Date(val*1000).toLocaleString() },
             { name: 'avg', label: 'Average', field: 'avg', sortable: true },
+            { name: 'jitter', label: 'Jitter', field: 'jitter', sortable: true },
             { name: 'max', label: 'Max', field: 'max', sortable: true },
             { name: 'min', label: 'Min', field: 'min', sortable: true },
             { name: 'isOnline', label: 'Connection', field: 'isOnline' }

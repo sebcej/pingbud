@@ -5,14 +5,22 @@
           Settings
         </q-card-section>
         <q-card-section style="min-width: 500px;">
-          <q-input type="number" label="N. of pings" v-model.number="form.pingcount"/>
-          <q-input label="Frequency" v-model.number="form.pingcron"/>
-          <q-input label="Ip to call" v-model="form.pingroute"/>
-          <q-input type="number" label="Data retention (days)" v-model.number="form.retention"/>
-          <q-input type="number" label="Timeout (seconds)" v-model.number="form.timeout"/>
-        </q-card-section>
-        <q-card-section>
-          <q-btn color="primary" size="md" @click="submit">Save</q-btn>
+          <q-form @submit="submit">
+            <q-input type="number" label="N. of pings" hint="Number of pings performed. The final value will be an average" :rules="[requiredField]" v-model.number="form.pingcount"/>
+            <q-input label="Frequency" hint="Crontab notation with seconds" :rules="[validCron]" v-model="form.pingcron"/>
+            <q-input label="Ip to call" :rules="[requiredField, validIp]" v-model="form.pingroute"/>
+            <q-input type="number" label="Data retention (days)" :rules="[requiredField]" v-model.number="form.retention"/>
+            <q-input type="number" label="Timeout (seconds)" hint="Time before the connection is considered faulty" :rules="[requiredField]" v-model.number="form.timeout"/>
+           <div class="q-pt-sm">
+              <q-checkbox label="Privilegied mode" v-model="form.privilegedmode" dense/>
+              <div class="q-field__bottom q-pl-none">
+                In some systems privileged mode (root) is necessary. See <a href='https://github.com/go-ping/ping#supported-operating-systems'>here</a> why
+              </div>
+           </div>
+            <div class="q-pt-md">
+              <q-btn type="submit" color="primary" size="md">Save</q-btn>
+            </div>
+          </q-form>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -20,6 +28,7 @@
 
 <script>
   import { defineComponent } from "vue";
+  import { validCron, requiredField, validIp } from "src/common/validators"
 
   export default defineComponent({
     name: "SettingsPopup",
@@ -30,6 +39,9 @@
       }
     },
     methods: {
+      validCron,
+      requiredField,
+      validIp,
       async getData () {
         await this.$store.dispatch('master/getSettings')
       },

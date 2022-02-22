@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 	"pingbud/common"
+	"pingbud/cron"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,6 +23,8 @@ func setSettings(c *gin.Context) {
 	}
 
 	common.UpdateSettings(settings, false)
+
+	cron.Restart()
 
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,

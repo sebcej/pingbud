@@ -23,6 +23,11 @@ func pingCron() {
 	if err != nil {
 		panic(err)
 	}
+
+	if common.Settings.GetBool("privilegedmode") {
+		pinger.SetPrivileged(true)
+	}
+
 	pinger.Timeout = time.Duration(common.Settings.GetInt("timeout")) * time.Second
 	pinger.Count = common.Settings.GetInt("pingcount")
 	err = pinger.Run()

@@ -66,10 +66,11 @@ func GetAggregatedPings(filter string) (pings []PingTest, err error) {
 
 	var groupedPings [][]PingTest
 	tempPingsLen := len(tempPings)
-	for i := divider; i < tempPingsLen; i += divider {
+	for i := divider; i <= tempPingsLen; i += divider {
 		groupedPings = append(groupedPings, tempPings[i-divider:i])
 	}
 
+	// Include in the graph the ping group that is not yet completed
 	mod := tempPingsLen % divider
 	groupedPings = append(groupedPings, tempPings[tempPingsLen-mod:])
 

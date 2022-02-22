@@ -11,12 +11,13 @@ import (
 var Settings *viper.Viper
 
 type SettingsAttrs struct {
-	PingRoute string `json:"pingroute" binding:"required"`
-	PingCron  string `json:"pingcron" binding:"required"`
-	Enabled   bool   `json:"enabled" binding:""`
-	Timeout   int    `json:"timeout" binding:"required"`
-	PingCount int    `json:"pingcount" binding:"required"`
-	Retention int    `json:"retention" binding:"required"`
+	PingRoute      string `json:"pingroute" binding:"required"`
+	PingCron       string `json:"pingcron" binding:"required"`
+	Enabled        bool   `json:"enabled" binding:""`
+	PrivilegedMode bool   `json:"privilegedmode" binding:""`
+	Timeout        int    `json:"timeout" binding:"required"`
+	PingCount      int    `json:"pingcount" binding:"required"`
+	Retention      int    `json:"retention" binding:"required"`
 }
 
 func InitSettings() {
