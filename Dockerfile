@@ -20,8 +20,8 @@ WORKDIR /go
 
 COPY --from=backend_builder /app/pingbud /go/pingbud
 
-ENV PINGBUD_DB_PATH=/
-ENV PINGBUD_SETTINGS_PATH=/
+ENV PINGBUD_DB_PATH=/data/
+ENV PINGBUD_SETTINGS_PATH=/data/
 
 EXPOSE 8080
 
