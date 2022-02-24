@@ -31,7 +31,7 @@ func stripNEmbed(root fs.FS) static.ServeFileSystem {
 }
 
 func Init(staticRoot embed.FS) {
-	address := os.Getenv("WEB_ADDRESS")
+	address := os.Getenv("PINGBUD_WEB_ADDRESS")
 	if address == "" {
 		address = ":8080"
 	}
